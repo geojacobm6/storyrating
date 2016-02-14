@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<p><a href="{% url 'story_add' %}">Add stories</a></p></br>
+<ul>
+    {% for obj in total %}
+    {{ obj.story.title|striptags }}</br>
+    {{ obj.story.link|urlize }}
+        {% if obj.vote %}
+        <a href="{% if obj.vote == 'upvote' %}javascript:void(0);{% else %}{% url 'story_vote' obj.story.id 'upvote' %}{% endif %}" class="btn btn-sm btn-default {% if obj.vote == 'upvote' %} active {% endif %}">Upvote</a>&nbsp;<a href="{% if obj.vote == 'downvote' %}javascript:void(0);{% else %}{% url 'story_vote' obj.story.id 'downvote' %}{% endif %}" class="btn btn-sm btn-default {% if obj.vote == 'downvote' %} active {% endif %}">Downvote</a>
+        {% else %}
+        <a href="{% url 'story_vote' obj.story.id 'upvote' %}" class="btn btn-sm btn-default">Upvote</a>&nbsp;<a href="{% url 'story_vote' obj.story.id 'downvote' %}" class="btn btn-sm btn-default ">Downvote</a>
+        {% endif %}
+    <a class="btn" href="{% url 'story_comments' obj.story.id %}">comment</a></br></br>
+    {% empty %}
+    <p> No stories found </p>
+    {% endfor %}
+</ul>
+{% endblock %}
